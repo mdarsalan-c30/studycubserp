@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* StudyCubs Employee ERM Design System - Inspired by studycubs.com brand */
+
+@layer base {
+  :root {
+    /* StudyCubs Brand Colors */
+    --studycubs-teal: 182 89% 44%;          /* Primary teal #16B2A5 */
+    --studycubs-teal-light: 182 89% 54%;    /* Lighter teal for hover */
+    --studycubs-teal-dark: 182 89% 34%;     /* Darker teal for pressed */
+    --studycubs-yellow: 44 100% 60%;        /* Accent yellow #FFD700 */
+    --studycubs-yellow-light: 44 100% 70%;  /* Light yellow for highlights */
+    --studycubs-orange: 33 100% 60%;        /* Warm orange accent */
+    
+    /* Neutral Colors */
+    --background: 0 0% 98%;                  /* Soft off-white */
+    --foreground: 222 20% 15%;               /* Dark charcoal */
+    --surface: 0 0% 100%;                    /* Pure white for cards */
+    --surface-muted: 210 16% 96%;            /* Light grey */
+    
+    /* Semantic Color Mapping */
+    --primary: var(--studycubs-teal);
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: var(--studycubs-teal-light);
+    
+    --secondary: var(--studycubs-yellow);
+    --secondary-foreground: 222 20% 15%;
+    --secondary-hover: var(--studycubs-yellow-light);
+    
+    --accent: var(--studycubs-orange);
+    --accent-foreground: 0 0% 100%;
+    
+    --card: var(--surface);
+    --card-foreground: var(--foreground);
+    
+    --muted: var(--surface-muted);
+    --muted-foreground: 222 10% 45%;
+    
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
+    --ring: var(--studycubs-teal);
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --popover: var(--surface);
+    --popover-foreground: var(--foreground);
+    
+    /* Design System Variables */
+    --radius: 0.75rem;
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--studycubs-teal)), hsl(var(--studycubs-teal-light)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--studycubs-yellow)), hsl(var(--studycubs-orange)));
+    --gradient-surface: linear-gradient(180deg, hsl(var(--surface)), hsl(var(--surface-muted)));
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(var(--studycubs-teal) / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(var(--studycubs-teal) / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(var(--studycubs-teal) / 0.1);
+    --shadow-glow: 0 0 20px hsl(var(--studycubs-yellow) / 0.3);
+
+    /* Sidebar */
+    --sidebar-background: var(--surface);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--studycubs-teal);
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: var(--surface-muted);
+    --sidebar-accent-foreground: var(--foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--studycubs-teal);
+  }
+}
+
+@layer components {
+  /* StudyCubs Component Variants */
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary to-primary-hover text-primary-foreground font-medium rounded-xl px-6 py-3 transition-all duration-200 hover:shadow-lg hover:shadow-primary/20 hover:scale-105 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply bg-gradient-to-r from-secondary to-secondary-hover text-secondary-foreground font-medium rounded-xl px-6 py-3 transition-all duration-200 hover:shadow-lg hover:shadow-secondary/20 hover:scale-105 active:scale-95;
+  }
+  
+  .btn-ghost {
+    @apply bg-transparent text-primary border border-primary/20 hover:bg-primary/5 hover:border-primary/40 font-medium rounded-xl px-6 py-3 transition-all duration-200;
+  }
+  
+  .card-studycubs {
+    @apply bg-card border border-border rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1;
+  }
+  
+  .navbar-studycubs {
+    @apply bg-gradient-to-r from-primary to-primary-hover text-primary-foreground;
+  }
+  
+  .badge-accent {
+    @apply bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-medium shadow-sm;
+  }
+  
+  .input-studycubs {
+    @apply border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-3 transition-all duration-200 bg-surface;
+  }
+  
+  .table-studycubs th {
+    @apply bg-gradient-to-r from-primary to-primary-hover text-primary-foreground px-6 py-4 text-left font-semibold;
+  }
+  
+  .table-studycubs td {
+    @apply px-6 py-4 border-b border-border hover:bg-muted/50 transition-colors duration-150;
+  }
+  
+  .status-active {
+    @apply bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .status-pending {
+    @apply bg-secondary/20 text-orange-800 px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .status-inactive {
+    @apply bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-poppins antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold text-foreground;
+  }
+}
