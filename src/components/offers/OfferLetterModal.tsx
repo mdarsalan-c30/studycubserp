@@ -280,13 +280,11 @@
 
 
 
-import { useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
-import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import companySeal from "@/assets/company-seal.jpeg"; // ✅ put your seal image inside /src/assets/
+import companySeal from "@/assets/company-seal.jpeg"; // ✅ place your seal inside /src/assets/
 
 interface OfferLetterModalProps {
   offer: {
@@ -302,54 +300,76 @@ interface OfferLetterModalProps {
 }
 
 const OfferLetterModal = ({ offer, trigger }: OfferLetterModalProps) => {
-  const contentRef = useRef<HTMLDivElement>(null);
+  const handleDownload = () => {
+    const doc = new jsPDF();
 
-  const handleDownload = async () => {
-    if (!contentRef.current) return;
+    // Header
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Offer of Employment", 105, 20, { align: "center" });
 
-    const canvas = await html2canvas(contentRef.current, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.text("StudyCubs Private Limited", 105, 28, { align: "center" });
 
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
+    // Body
+    doc.setFontSize(11);
+    let y = 50;
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, y);
+    y += 10;
 
-    const imgProps = pdf.getImageProperties(imgData);
-    const imgHeight = (imgProps.height * pageWidth) / imgProps.width;
+    doc.text(`Dear ${offer.candidateName},`, 20, y);
+    y += 10;
 
-    let heightLeft = imgHeight;
-    let position = 0;
+    const body = [
+      `We are pleased to offer you the position of ${offer.position} in the ${offer.department} department at StudyCubs Pvt. Ltd.`,
+      `Your starting salary will be ${offer.salary} and your expected start date is ${new Date(
+        offer.startDate
+      ).toLocaleDateString()}.`,
+      "Please find enclosed the terms and conditions of your employment. We look forward to a mutually beneficial association.",
+    ];
 
-    pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight);
-    heightLeft -= pageHeight;
+    body.forEach((line) => {
+      const split = doc.splitTextToSize(line, 170);
+      doc.text(split, 20, y);
+      y += split.length * 8;
+    });
 
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight);
-      heightLeft -= pageHeight;
-    }
+    // Signature
+    y += 20;
+    doc.text("For StudyCubs Pvt. Ltd.", 20, y);
+    y += 30;
+    doc.text("--------------------------", 20, y);
+    doc.text("Authorized Signatory", 20, y + 10);
 
-    pdf.save(`${offer.candidateName}-OfferLetter.pdf`);
+    // Seal
+    doc.addImage(companySeal, "JPEG", 140, y - 20, 40, 40);
+
+    // Footer
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+    doc.text("StudyCubs Private Limited | www.studycubs.com | info@studycubs.com", 105, 280, {
+      align: "center",
+    });
+
+    doc.save(`${offer.candidateName}-OfferLetter.pdf`);
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-w-4xl h-[90vh] overflow-y-auto bg-white text-black">
+      <DialogContent className="max-w-3xl bg-white text-black">
         <DialogHeader>
           <DialogTitle>Offer Letter Preview</DialogTitle>
         </DialogHeader>
 
-        {/* Letter content for preview + PDF */}
-        <div ref={contentRef} className="p-8 space-y-6">
-          {/* Header */}
+        {/* Letter Preview */}
+        <div className="p-6 space-y-6">
           <div className="text-center border-b pb-4">
             <h2 className="text-2xl font-bold">Offer of Employment</h2>
             <p className="text-gray-600">StudyCubs Private Limited</p>
           </div>
 
-          {/* Body */}
           <div className="space-y-4 text-sm leading-6">
             <p>Date: {new Date().toLocaleDateString()}</p>
             <p>Dear <strong>{offer.candidateName}</strong>,</p>
@@ -365,7 +385,6 @@ const OfferLetterModal = ({ offer, trigger }: OfferLetterModalProps) => {
             </p>
           </div>
 
-          {/* Signature + Seal */}
           <div className="mt-8 flex justify-between items-end">
             <div>
               <p className="font-semibold">For StudyCubs Pvt. Ltd.</p>
@@ -379,7 +398,6 @@ const OfferLetterModal = ({ offer, trigger }: OfferLetterModalProps) => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="mt-12 text-xs text-gray-500 border-t pt-4 text-center">
             StudyCubs Private Limited | www.studycubs.com | info@studycubs.com
           </div>
