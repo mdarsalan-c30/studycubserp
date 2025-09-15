@@ -421,7 +421,3 @@ const OfferLetters = () => {
 
 export default OfferLetters;
 
-  );
-};
-
-export default OfferLetters;
