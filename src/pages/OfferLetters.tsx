@@ -212,16 +212,14 @@
 // };
 
 // export default OfferLetters;
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Loader2 } from "lucide-react";
+import { Loader2, Search, Filter, Download, Plus, Eye, Send, MoreHorizontal } from "lucide-react";
 import OfferLetterModal from "@/components/offers/OfferLetterModal";
 import CreateOfferModal from "@/components/forms/CreateOfferModal";
 import { useOfferLetters } from "@/hooks/useOfferLetters";
-import { Search, Filter, Download, Plus, Eye, Send, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -375,7 +373,11 @@ const OfferLetters = () => {
                   salary: offer.salary,
                   startDate: offer.start_date,
                   department: offer.department,
-                  status: (offer.status || "draft") as "draft" | "sent" | "accepted" | "declined",
+                  status: (offer.status || "draft") as
+                    | "draft"
+                    | "sent"
+                    | "accepted"
+                    | "declined",
                 }}
                 trigger={
                   <Button variant="outline" size="sm" className="btn-ghost flex-1">
@@ -414,6 +416,11 @@ const OfferLetters = () => {
         </div>
       )}
     </div>
+  );
+};
+
+export default OfferLetters;
+
   );
 };
 
